@@ -59,24 +59,7 @@ const TestimonialsSlider = () => {
   const [comments, setComments] = useState(mockComments);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    // Fetch real comments from our backend cache (Razorpay Webhooks/API)
-    const fetchRealComments = async () => {
-      try {
-        const res = await fetch('/api/comments');
-        if (res.ok) {
-          const realData = await res.json();
-          if (realData && realData.length > 0) {
-            setComments([...mockComments, ...realData]);
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch comments", error);
-      }
-    };
-    
-    fetchRealComments();
-  }, []);
+
 
   useEffect(() => {
     // Auto slider

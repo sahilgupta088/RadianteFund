@@ -63,7 +63,7 @@ const Progress = () => {
             </div>
           </div>
           <div className="text-right">
-            <p className="font-space text-val-light/60 uppercase text-xs tracking-widest mb-1">Target: Kuronami Bundle</p>
+            <p className="font-space text-val-light/60 uppercase text-xs tracking-widest mb-1">Target: Kuronami 2.0 Vandal</p>
             <p className="font-space text-val-light font-bold text-lg tracking-widest">₹{targetAmount} (2375 VP)</p>
           </div>
         </div>
