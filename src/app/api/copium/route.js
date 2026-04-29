@@ -3,11 +3,11 @@ import rateLimit from '@/lib/rateLimit';
 import { Redis } from '@upstash/redis';
 
 // Initialize Redis client securely using environment variables
-const redis = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
+const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+const redis = (url && token)
+  ? new Redis({ url, token })
   : null;
 
 // Fallback for local development if Redis is not linked yet
