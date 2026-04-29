@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 
+// Cache this route for 30 seconds. Vercel will only hit Razorpay once every 30s
+// even if 10,000 people are on your site at the same time!
+export const revalidate = 30;
+
 export async function GET() {
   const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
   const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;

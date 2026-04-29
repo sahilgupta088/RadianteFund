@@ -16,7 +16,7 @@ const mockComments = [
   {
     id: 3,
     name: "Random Cypher (In The Corner)",
-    text: "Donated ₹1000. He still hasn't dropped me a gun. 10/10 immersion."
+    text: "Donated ₹1. He still hasn't dropped me a gun. 10/10 immersion."
   },
   {
   id: 4,
@@ -26,7 +26,7 @@ const mockComments = [
 {
   id: 5,
   name: "Silent Omen (Definitely Not AFK)",
-  text: "Donated ₹200 hoping he'd speak. He didn't. Just more mysterious smoke placements."
+  text: "Donated ₹20 hoping he'd speak. He didn't. Just more mysterious smoke placements."
 },
 {
   id: 6,
@@ -46,12 +46,12 @@ const mockComments = [
 {
   id: 9,
   name: "Lagging Duelist (Ping: 120ms)",
-  text: "Invested ₹300 in hope of smoother gameplay. Instead, witnessed teleportation mechanics."
+  text: "Invested ₹30 in hope of smoother gameplay. Instead, witnessed teleportation mechanics."
 },
 {
   id: 10,
   name: "Clutch-or-Kick Specialist",
-  text: "Donated ₹500 for confidence boost. He saved. In a 1v1. Legendary."
+  text: "Donated ₹50 for confidence boost. He saved. In a 1v1. Legendary."
 },
 ];
 

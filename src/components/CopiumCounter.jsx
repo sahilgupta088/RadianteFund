@@ -24,7 +24,7 @@ const CopiumCounter = () => {
   }, []);
 
   const handleInhale = async () => {
-    const increment = 1;
+    const increment = Math.floor(Math.random() * 10) + 1;
     
     // Optimistic update
     setCopiumCount(prev => prev + increment);
@@ -35,15 +35,30 @@ const CopiumCounter = () => {
 
     // Persist to backend
     try {
-      await fetch('/api/copium', {
+      const res = await fetch('/api/copium', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ increment })
       });
+      
+      if (res.status === 429) {
+        setCopiumCount(prev => prev - increment); // Revert optimistic update
+        alert("Enough copium is taken! Please wait a minute before inhaling more.");
+      }
     } catch (error) {
       console.error("Failed to update copium count", error);
-      // Revert if failed (optional, but keep it simple for now)
+      // Revert if failed
+      setCopiumCount(prev => prev - increment);
     }
+  };
+  const formatNumber = (num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    }
+    return num.toLocaleString();
   };
 
   return (
@@ -89,7 +104,7 @@ const CopiumCounter = () => {
               animate={{ scale: 1, color: '#ff4655' }}
               className="font-epilogue font-black text-4xl md:text-5xl italic text-val-red uppercase"
             >
-              {copiumCount.toLocaleString()}
+              {formatNumber(copiumCount)}
             </motion.span>
           </div>
         </div>

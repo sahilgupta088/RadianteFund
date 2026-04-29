@@ -5,33 +5,70 @@ import { ShoppingCart } from 'lucide-react';
 const DonationCards = () => {
   const [customAmount, setCustomAmount] = useState('');
   
-  // Base Razorpay link for custom amount (replace with your actual generic Razorpay payment link)
-  const razorpayCustomLink = "https://razorpay.me/@sahilgupta1064";
-
   const tiers = [
     {
+      id: 'tier1',
       price: 50,
       name: "The 'Pistol Specialist'",
       desc: "It's just a classic, but you pretend it has a right-click feature. Guaranteed to miss 100% of the shots I don't take.",
       btnText: "DROP A CLASSIC",
-      paymentLink: "https://rzp.io/rzp/I6o6C3ml" // Replace with actual Razorpay payment link
     },
     {
+      id: 'tier2',
       price: 100,
       name: "The 'Full Shield'",
       desc: "Helps me survive exactly 0.5s longer against an Op. Every millisecond counts when you're getting swung by a Reyna.",
       btnText: "BUY FULL SHIELDS",
       highlight: true,
-      paymentLink: "https://rzp.io/rzp/nclQsujq" // Replace with actual Razorpay payment link
     },
     {
+      id: 'tier3',
       price: 500,
       name: "The 'Vandal Giver'",
       desc: "I'll buy the expensive skin and immediately die so you can pick it up. It's an investment for the team, really.",
       btnText: "FUND THE FULL BUY",
-      paymentLink: "https://rzp.io/rzp/ffpyGdh2" // Replace with actual Razorpay payment link
     }
   ];
+
+  const handleDonateClick = async (e, tierId) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/payment-links');
+      if (res.status === 429) {
+        alert("Rate limit exceeded. Please wait a moment before trying again.");
+        return;
+      }
+      const links = await res.json();
+      if (links[tierId] && links[tierId] !== '#') {
+        window.open(links[tierId], '_blank', 'noopener,noreferrer');
+      } else {
+        alert("Payment link not configured yet!");
+      }
+    } catch (error) {
+      console.error("Failed to fetch payment links", error);
+    }
+  };
+
+  const handleCustomDonateClick = async (e) => {
+    e.preventDefault();
+    if (!customAmount) return;
+    
+    try {
+      const res = await fetch('/api/payment-links');
+      if (res.status === 429) {
+        alert("Rate limit exceeded. Please wait a moment before trying again.");
+        return;
+      }
+      const links = await res.json();
+      if (links.custom && links.custom !== '#') {
+        window.open(links.custom, '_blank', 'noopener,noreferrer');
+      } else {
+        alert("Payment link not configured yet!");
+      }
+    } catch (error) {
+      console.error("Failed to fetch payment links", error);
+    }
+  };
 
   return (
     <section id="armory-access" className="w-full flex flex-col items-center py-20 px-4 bg-[#0a1118]">
@@ -72,10 +109,8 @@ const DonationCards = () => {
               "{tier.desc}"
             </p>
             
-            <a 
-              href={tier.paymentLink}
-              target="_blank"
-              rel="noreferrer"
+            <button 
+              onClick={(e) => handleDonateClick(e, tier.id)}
               className={`w-full py-4 text-center font-space text-xs font-bold uppercase tracking-widest transition-colors notched-tr notched-bl glitch-hover ${
                 tier.highlight 
                   ? 'bg-val-red text-white hover:bg-white hover:text-val-red' 
@@ -83,7 +118,7 @@ const DonationCards = () => {
               }`}
             >
               {tier.btnText}
-            </a>
+            </button>
           </div>
         ))}
       </div>
@@ -110,17 +145,17 @@ const DonationCards = () => {
               className="w-full bg-[#0a1118] border border-val-light/20 py-3 pl-8 pr-4 text-val-light font-space outline-none focus:border-val-red transition-colors"
             />
           </div>
-          <a 
-            href={customAmount ? razorpayCustomLink : '#'}
-            target="_blank"
-            rel="noreferrer"
-            onClick={(e) => {
-              if(!customAmount) e.preventDefault();
-            }}
-            className="bg-val-light text-val-dark font-space font-bold uppercase text-xs tracking-widest px-6 py-3 hover:bg-val-red hover:text-white transition-colors flex items-center justify-center"
+          <button 
+            onClick={handleCustomDonateClick}
+            disabled={!customAmount}
+            className={`font-space font-bold uppercase text-xs tracking-widest px-6 py-3 transition-colors flex items-center justify-center ${
+              customAmount 
+                ? 'bg-val-light text-val-dark hover:bg-val-red hover:text-white' 
+                : 'bg-val-light/20 text-val-dark/50 cursor-not-allowed'
+            }`}
           >
             Inject
-          </a>
+          </button>
         </div>
       </div>
       
